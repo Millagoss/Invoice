@@ -1,0 +1,45 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  invoices  Invoice[]
+}
+
+model Invoice {
+  id          Int      @id @default(autoincrement())
+  number      String   @unique
+  clientId    Int
+  client      Client  @relation(fields: [clientId], references: [id])
+  items       InvoiceItem[]
+  total       Float
+  dueDate     DateTime
+  createdBy   Int
+  creator     User     @relation(fields: [createdBy], references: [id])
+}
+
+model Client {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String  @unique
+  invoices    Invoice[]
+}
+
+model InvoiceItem {
+  id          Int      @id @default(autoincrement())
+  invoiceId   Int
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
+  description  String
+  price       Float
+}
