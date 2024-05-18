@@ -64,5 +64,6 @@
     "**/app/**/route.ts": "${dirname} - route",
     "**/components/**/index.tsx": "${dirname} - component",
     "**/_components/**/index.tsx": "${dirname} - component"
-  }
+  },
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
