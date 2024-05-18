@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { IconMail, IconPassword } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { createUser } from "../_actions/auth.actions";
@@ -17,7 +18,7 @@ import { User, userSchema } from "../_actions/user.schema";
 
 function SignUp() {
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const {
     getValues,
     register,
@@ -30,24 +31,23 @@ function SignUp() {
     const password = getValues().password;
     const confirmPassword = getValues().confirmPassword;
 
-    const validatedFields = userSchema.safeParse({
+    const { success, error } = userSchema.safeParse({
       email,
       password,
       confirmPassword,
     });
-    if (!validatedFields.success) {
-      notify("Error", validatedFields.error.issues[0].message);
-      setLoading(false);
-      return;
-    }
-
-    if (password !== confirmPassword) {
+    if (!success) {
+      notify("Error", error.issues[0].message);
+    } else if (password !== confirmPassword) {
       notify("Error", "Password does not match");
     } else {
       const { data, error } = await createUser(email, password);
-      if (data) notify("Success", "User created successfully, you can sign-in");
-      else notify("Error", `User creation failed: ${error}`);
+      if (data) {
+        notify("Success", "User created successfully, you can sign-in");
+        router.push("/auth/sign-in");
+      } else notify("Error", `User creation failed: ${error}`);
     }
+
     setLoading(false);
   };
 
