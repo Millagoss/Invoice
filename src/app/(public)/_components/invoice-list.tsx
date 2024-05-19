@@ -1,5 +1,8 @@
 "use client";
 import { InvoiceListType } from "@/types/invoice";
+import { Badge, Box, Button } from "@mantine/core";
+import { IconEdit } from "@tabler/icons-react";
+import Link from "next/link";
 import { useMemo } from "react";
 import { useTable } from "react-table";
 
@@ -25,6 +28,35 @@ const InvoiceList = ({
       {
         Header: "Due Date",
         accessor: (row: any) => row.dueDate, // Format date
+      },
+      {
+        Header: "Items",
+        accessor: (row: any) => {
+          return (
+            <Box className="overflow-x-scroll">
+              {row.items.map((item: { description: string; id: number }) => (
+                <Badge variant="outline" className="mr-1" key={item.id}>
+                  {item.description}
+                </Badge>
+              ))}
+            </Box>
+          );
+        },
+      },
+      {
+        Header: "Action",
+        accessor: (row: any) => (
+          <>
+            <Button
+              component={Link}
+              variant="light"
+              href={`/invoices/${row.id}`}
+              className="mr-5"
+            >
+              <IconEdit className="w-5 h-5" />
+            </Button>
+          </>
+        ),
       },
     ],
     []
@@ -65,7 +97,7 @@ const InvoiceList = ({
             prepareRow(row);
             return (
               // eslint-disable-next-line react/jsx-key
-              <tr {...row.getRowProps()} className="hover:bg-gray-500">
+              <tr {...row.getRowProps()} className="hover:bg-gray-100">
                 {row.cells.map((cell) => (
                   // eslint-disable-next-line react/jsx-key
                   <td className="px-4 py-2 border border-gray-300">
