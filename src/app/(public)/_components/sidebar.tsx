@@ -11,7 +11,6 @@ const data = [
     label: "Create Invoice",
     icon: IconAlignBoxLeftTop,
   },
-  // { link: "/resources", label: "Resources", icon: IconFiles },
 ];
 
 function Sidebar() {
@@ -24,7 +23,7 @@ function Sidebar() {
         }}
         className={`flex min-h-11 pl-4  hover:bg-slate-100 w-full items-center gap-4 ${
           active === item.label
-            ? "text-primary-default border-r-4 border-primary-default"
+            ? "text-primary-default bg-slate-100 border-r-4 border-primary-default"
             : "opacity-55"
         } `}
       >

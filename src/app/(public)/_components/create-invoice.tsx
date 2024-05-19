@@ -26,6 +26,14 @@ interface Props {
   clients: { id: number; name: string; email: string }[];
 }
 
+const initialInvoice: InvoiceData = {
+  number: "",
+  client: "",
+  items: [],
+  total: 0,
+  dueDate: null,
+};
+
 const CreateInvoice = ({ clients }: Props) => {
   const router = useRouter();
   const { user } = useAuth();
@@ -40,13 +48,7 @@ const CreateInvoice = ({ clients }: Props) => {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
-  const [invoiceData, setInvoiceData] = useState<InvoiceData>({
-    number: "",
-    client: "",
-    items: [],
-    total: 0,
-    dueDate: null,
-  });
+  const [invoiceData, setInvoiceData] = useState<InvoiceData>(initialInvoice);
 
   const handleSubmit = async () => {
     if (!invoiceNumber || !invoiceData.client || !invoiceData.items.length) {
@@ -176,10 +178,14 @@ const CreateInvoice = ({ clients }: Props) => {
         />
       </Group>
       <Group justify="end">
-        <Button disabled={isAdding} onClick={handleSubmit}>
+        <Button loading={isAdding} onClick={handleSubmit}>
           Submit
         </Button>
-        <Button disabled={isAdding} variant="outline">
+        <Button
+          disabled={isAdding}
+          variant="outline"
+          onClick={() => setInvoiceData(initialInvoice)}
+        >
           Clear
         </Button>
       </Group>

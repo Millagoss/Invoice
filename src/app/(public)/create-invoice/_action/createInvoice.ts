@@ -26,6 +26,6 @@ export const createInvoice = async (data: Invoice) => {
     });
     return { data: response };
   } catch (error) {
-    return { error };
+    return { error: "error creating invoice" };
   }
 };
