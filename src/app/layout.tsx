@@ -17,13 +17,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userId = await getSession();
+  const user = await getSession();
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <AuthProvider userId={userId}>{children}</AuthProvider>
+          <AuthProvider user={user}>{children}</AuthProvider>
         </Provider>
       </body>
     </html>

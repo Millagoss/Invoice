@@ -2,20 +2,24 @@
 import { createContext, useContext } from "react";
 
 type AuthContextType = {
-  userId: string | null;
+  user?: {
+    id: string | number;
+    email: string;
+  };
 };
 
 type AuthProviderProps = {
-  userId: string | null;
+  user?: {
+    id: string | number;
+    email: string;
+  };
   children: React.ReactNode;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ userId, children }: AuthProviderProps) {
-  const value = {
-    userId,
-  };
+export function AuthProvider({ user, children }: AuthProviderProps) {
+  const value = { user };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
