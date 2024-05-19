@@ -17,7 +17,7 @@ export default async function PublicLayout({
   }
 
   return (
-    <Flex>
+    <Flex className="h-screen">
       <Sidebar />
       <Box className="gap-10 flex flex-col px-10 py-5 w-full bg-primary-background">
         <UserHeader />

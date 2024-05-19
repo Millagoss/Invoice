@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
+import { cache } from "react";
 import "server-only";
 import { prisma } from "./prisma";
 
-export const getSession = async function () {
+export const getSession = cache(async function () {
   const userId = cookies().get("InvoiceSession")?.value;
 
   if (!userId) return;
@@ -20,7 +21,7 @@ export const getSession = async function () {
   if (!user) return;
 
   return user;
-};
+});
 export const createSession = async function (userId: string) {
   cookies().set("InvoiceSession", userId);
 };

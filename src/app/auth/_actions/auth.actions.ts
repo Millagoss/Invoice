@@ -1,6 +1,8 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/session";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function signUp(email: string, password: string) {
   try {
@@ -40,4 +42,9 @@ export async function signIn(email: string, password: string) {
     }
     return { error: "something went wrong please try again" };
   }
+}
+
+export async function signOut() {
+  cookies().delete("InvoiceSession");
+  redirect("/auth/sign-in");
 }
