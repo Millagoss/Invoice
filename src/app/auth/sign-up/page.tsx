@@ -95,7 +95,7 @@ function SignUp() {
         </form>
 
         <Text ta="center" c="dimmed" mt="lg">
-          I have an account?{" "}
+          You have an account?{" "}
           <Link className="text-primary-default" href="/auth/sign-in">
             Sign In
           </Link>

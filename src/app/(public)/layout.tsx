@@ -1,13 +1,21 @@
+import { getSession } from "@/lib/session";
 import { Box, Flex } from "@mantine/core";
+import { redirect } from "next/navigation";
 import React from "react";
 import Sidebar from "./_components/sidebar";
 import UserHeader from "./_components/user-header";
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userId = await getSession();
+
+  if (userId === null) {
+    redirect("/auth/sign-up");
+  }
+
   return (
     <Flex>
       <Sidebar />

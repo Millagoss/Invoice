@@ -1,5 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { createSession } from "@/lib/session";
 
 export async function signUp(email: string, password: string) {
   try {
@@ -27,6 +28,7 @@ export async function signIn(email: string, password: string) {
     });
 
     if (user && user.password === password) {
+      await createSession(JSON.stringify(user.id));
       return { data: user };
     } else if (user && user.password !== password) {
       return { error: "Incorrect Password" };
