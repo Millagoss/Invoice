@@ -13,8 +13,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { createUser } from "../_actions/auth.actions";
-import { User, userSchema } from "../_actions/user.schema";
+import { signUp } from "../_actions/auth.actions";
+import { SignUpType, signUpSchema } from "../_actions/user.schema";
 
 function SignUp() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ function SignUp() {
     getValues,
     register,
     formState: { errors },
-  } = useForm<User>();
+  } = useForm<SignUpType>();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -31,7 +31,7 @@ function SignUp() {
     const password = getValues().password;
     const confirmPassword = getValues().confirmPassword;
 
-    const { success, error } = userSchema.safeParse({
+    const { success, error } = signUpSchema.safeParse({
       email,
       password,
       confirmPassword,
@@ -41,7 +41,7 @@ function SignUp() {
     } else if (password !== confirmPassword) {
       notify("Error", "Password does not match");
     } else {
-      const { data, error } = await createUser(email, password);
+      const { data, error } = await signUp(email, password);
       if (data) {
         notify("Success", "User created successfully, you can sign-in");
         router.push("/auth/sign-in");

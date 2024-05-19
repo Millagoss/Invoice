@@ -1,11 +1,5 @@
 import { Avatar, Box, Divider, Flex, Text } from "@mantine/core";
-import {
-  IconBell,
-  IconBellPlus,
-  IconChevronDown,
-  IconNotification,
-} from "@tabler/icons-react";
-import React from "react";
+import { IconBell, IconBellPlus, IconChevronDown } from "@tabler/icons-react";
 
 const UserHeader = () => {
   const notification = true;

@@ -19,7 +19,7 @@ function Sidebar() {
   const links = data.map((item) => (
     <Link href={item.link} key={item.label}>
       <Text
-        onClick={(event) => {
+        onClick={() => {
           setActive(item.label);
         }}
         className={`flex min-h-11 w-full items-center gap-4 ${

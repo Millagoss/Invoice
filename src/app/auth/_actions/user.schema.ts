@@ -1,5 +1,5 @@
 import { z } from "zod";
-export const userSchema = z.object({
+export const signUpSchema = z.object({
   email: z
     .string({
       invalid_type_error: "Invalid Email",
@@ -10,4 +10,15 @@ export const userSchema = z.object({
   confirmPassword: z.string().min(5),
 });
 
-export type User = z.infer<typeof userSchema>;
+export const signInSchema = z.object({
+  email: z
+    .string({
+      invalid_type_error: "Invalid Email",
+    })
+    .email()
+    .min(5),
+  password: z.string().min(5),
+});
+
+export type SignUpType = z.infer<typeof signUpSchema>;
+export type SignInType = z.infer<typeof signInSchema>;

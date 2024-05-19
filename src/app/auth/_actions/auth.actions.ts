@@ -1,7 +1,7 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 
-export async function createUser(email: string, password: string) {
+export async function signUp(email: string, password: string) {
   try {
     const user = await prisma.user.create({
       data: {
@@ -10,6 +10,28 @@ export async function createUser(email: string, password: string) {
       },
     });
     return { data: user };
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return { error: "email already taken" };
+    }
+    return { error: "something went wrong please try again" };
+  }
+}
+
+export async function signIn(email: string, password: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (user && user.password === password) {
+      return { data: user };
+    } else if (user && user.password !== password) {
+      return { error: "Incorrect Password" };
+    }
+    return { error: "User not Found" };
   } catch (error: any) {
     if (error.code === "P2002") {
       return { error: "email already taken" };
