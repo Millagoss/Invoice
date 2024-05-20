@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import { notify } from "@/components/notification/notification";
+import { exportInvoiceToPDF } from "@/lib/pdf";
 import { useAuth } from "@/providers/context";
 import { InvoiceData, InvoiceListType } from "@/types/invoice";
 import {
@@ -62,6 +63,9 @@ const UpdateInvoice = ({ invoice, clients }: Props) => {
     dueDate: new Date(dueDate || "") || null,
     number,
   });
+  const handleExport = () => {
+    exportInvoiceToPDF(invoice);
+  };
 
   const handleSubmit = async () => {
     if (!invoiceNumber || !invoiceData.client) {
@@ -247,6 +251,9 @@ const UpdateInvoice = ({ invoice, clients }: Props) => {
           onClick={handleDeleteInvoice}
         >
           Delete
+        </Button>
+        <Button onClick={handleExport} variant="gradient">
+          Export As PDF
         </Button>
       </Group>
     </Paper>
