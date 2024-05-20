@@ -5,5 +5,5 @@ export const exportInvoices = (invoices: any) => {
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
 
-  XLSX.writeFile(workbook, "Employee Lists.xlsx", { compression: true });
+  XLSX.writeFile(workbook, "Invoice.xlsx", { compression: true });
 };
