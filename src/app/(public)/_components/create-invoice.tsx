@@ -62,8 +62,11 @@ const CreateInvoice = ({ clients }: Props) => {
     };
 
     const { data, error } = await createInvoice(d);
-    if (data) notify("Success", "Invoice Created Successfully");
-    else if (error) {
+    if (data) {
+      notify("Success", "Invoice Created Successfully");
+      setInvoiceData(initialInvoice);
+      setInvoiceNumber("");
+    } else if (error) {
       notify("Error", "Something went wrong");
       console.log(error);
     }

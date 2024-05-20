@@ -1,15 +1,18 @@
 "use client";
+import { exportInvoices } from "@/lib/excel";
 import { InvoiceListType } from "@/types/invoice";
-import { Badge, Box, Button } from "@mantine/core";
-import { IconEdit } from "@tabler/icons-react";
+import { Badge, Box, Button, Flex, Text } from "@mantine/core";
+import { IconEdit, IconFileSpreadsheet } from "@tabler/icons-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTable } from "react-table";
 
 const InvoiceList = ({
   invoices,
+  title,
 }: {
   invoices: InvoiceListType[] | undefined;
+  title: string;
 }) => {
   const columns = useMemo(
     () => [
@@ -62,6 +65,9 @@ const InvoiceList = ({
     []
   );
 
+  const handleExport = () => {
+    exportInvoices(invoices);
+  };
   const data = useMemo(() => invoices, [invoices]) || [];
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -71,45 +77,57 @@ const InvoiceList = ({
     });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <table
-        {...getTableProps()}
-        className="w-full border border-gray-300 table-auto"
-      >
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            // eslint-disable-next-line react/jsx-key
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                // eslint-disable-next-line react/jsx-key
-                <th
-                  className="px-4 py-2 bg-gray-100 text-left font-medium text-xs"
-                  {...column.getHeaderProps()}
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
+    <>
+      <Flex className="flex justify-between pr-5 items-center">
+        <Text className="text-xl px-4 font-bold">{title}</Text>{" "}
+        <Box
+          onClick={handleExport}
+          className="p-1 cursor-pointer flex items-center border border-gray-200 shadow-md text-primary-text rounded-md"
+        >
+          <Text className="font-bold"> Export</Text>{" "}
+          <IconFileSpreadsheet size="30px" />
+        </Box>
+      </Flex>
+      <div className="container mx-auto px-4 py-8">
+        <table
+          {...getTableProps()}
+          className="w-full border border-gray-300 table-auto"
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
               // eslint-disable-next-line react/jsx-key
-              <tr {...row.getRowProps()} className="hover:bg-gray-100">
-                {row.cells.map((cell) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
                   // eslint-disable-next-line react/jsx-key
-                  <td className="px-4 py-2 border border-gray-300">
-                    {cell.render("Cell")}
-                  </td>
+                  <th
+                    className="px-4 py-2 bg-gray-100 text-left font-medium text-xs"
+                    {...column.getHeaderProps()}
+                  >
+                    {column.render("Header")}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <tr {...row.getRowProps()} className="hover:bg-gray-100">
+                  {row.cells.map((cell) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <td className="px-4 py-2 border border-gray-300">
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 
