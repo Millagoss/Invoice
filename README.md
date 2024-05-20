@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Invoice Management System
 
-## Getting Started
+A modern, user-friendly application for managing invoices, built with Next.js, leveraging Server Actions for data fetching and dynamic server-rendered pages for enhanced performance and SEO.
 
-First, run the development server:
+## Introduction
+
+This project provides a streamlined solution for managing invoices, offering functionalities for creating, updating, and viewing invoices alongside robust authentication features. Designed to simplify the process of invoice management for both businesses and individuals, it leverages cutting-edge technologies to deliver a seamless experience.
+
+## Setup
+
+To get started with the project, ensure you have Node.js installed on your system. Then, clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/Millagoss/Invoice
+cd invoice-management-system
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Generate Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Your application should now be running at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Authentication
 
-## Learn More
+Users can sign up and log in through the `/auth` route. After successful login, users are redirected to the home page where they can manage their invoices.
 
-To learn more about Next.js, take a look at the following resources:
+### Creating Invoices
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Navigate to the `/create-invoice` route to start creating new invoices. Fill out the necessary details and submit the form to add the invoice to your list.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Viewing and Updating Invoices
 
-## Deploy on Vercel
+Access the `/invoices` route to view all your invoices. Here, you can also update existing invoices or delete them.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Server Actions
+
+This project utilizes Next.js Server Actions for data fetching and manipulation. Server Actions provide a powerful alternative to traditional API routes, enabling direct interaction with databases and other services within the request-response cycle without the need for external API calls.
+
+### Dynamic Server-Rendered Pages
+
+Dynamic server-rendered pages enhance the performance and SEO of the application. By pre-rendering content on the server side, the application delivers faster initial page loads and improves search engine indexing.
