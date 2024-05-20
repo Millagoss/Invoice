@@ -54,8 +54,11 @@ function SignUp() {
   return (
     <Flex className="h-screen flex-col items-center justify-center px-1 md:flex-row md:px-32">
       <Paper className="w-1/2 px-0 md:px-20" withBorder={false} radius={0}>
-        <Text className="text-3xl" ta="center" mt="md" mb={30}>
+        <Text className="text-3xl" ta="center" mt="sm" mb={15}>
           Create Account
+        </Text>
+        <Text className="text-center text-primary-default mb-4">
+          YOU CAN USE RANDOM EMAIL!!
         </Text>
         <form>
           <TextInput
