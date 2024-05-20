@@ -1,6 +1,7 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { InvoiceData } from "@/types/invoice";
+import { revalidatePath } from "next/cache";
 
 interface Invoice extends InvoiceData {
   userId: string | number | undefined;
@@ -24,6 +25,7 @@ export const createInvoice = async (data: Invoice) => {
         createdBy: Number(userId),
       },
     });
+    revalidatePath("/invoices");
     return { data: response };
   } catch (error) {
     return { error: "error creating invoice" };
