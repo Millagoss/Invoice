@@ -19,6 +19,7 @@ import {
   useCombobox,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { IconPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { createInvoice } from "../create-invoice/_action/createInvoice";
 
@@ -80,7 +81,7 @@ const CreateInvoice = ({ clients }: Props) => {
   ));
 
   return (
-    <Paper className="container mx-auto space-y-5 px-6 py-8 ">
+    <Paper className="lg:container w-full p-1 mx-auto space-y-5 lg:px-6 py-8 ">
       <h1 className="text-2xl font-bold">Create Invoice</h1>
       <Group className="flex w-full">
         <TextInput
@@ -104,6 +105,7 @@ const CreateInvoice = ({ clients }: Props) => {
             <InputBase
               className="w-1/3"
               label="Select Client"
+              required
               component="button"
               type="button"
               pointer
@@ -122,7 +124,7 @@ const CreateInvoice = ({ clients }: Props) => {
         </Combobox>
       </Group>
 
-      <Flex className="flex-col w-full border border-gray-300 rounded-lg p-4">
+      <Flex className="flex-col w-full border border-gray-300 rounded-lg p-1 lg:p-4">
         <h2>Add Items</h2>
         <Flex className="items-center gap-4">
           <Box className="flex space-x-4 my-2">
@@ -150,7 +152,8 @@ const CreateInvoice = ({ clients }: Props) => {
               setPrice("");
             }}
           >
-            Add
+            <IconPlus className="block text-white size-7 lg:hidden" />
+            <span className="hidden lg:block"> Add</span>
           </Button>
         </Flex>
         <Box className="flex gap-2 items-start my-2">
@@ -174,6 +177,7 @@ const CreateInvoice = ({ clients }: Props) => {
           }
         />
         <DateInput
+          required
           className="w-1/3"
           value={invoiceData.dueDate}
           onChange={(date) =>

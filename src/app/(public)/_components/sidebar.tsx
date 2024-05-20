@@ -21,20 +21,20 @@ function Sidebar() {
         onClick={() => {
           setActive(item.label);
         }}
-        className={`flex min-h-11 pl-4  hover:bg-slate-100 w-full items-center gap-4 ${
+        className={`flex min-h-11 pl-4 hover:bg-slate-100 w-32 lg:w-full items-center gap-4 ${
           active === item.label
-            ? "text-primary-default bg-slate-100 border-r-4 border-primary-default"
+            ? "text-primary-default bg-slate-100 lg:border-r-4 border-primary-default"
             : "opacity-55"
         } `}
       >
-        <item.icon className="" stroke={1.5} />
+        <item.icon className="hidden lg:block" stroke={1.5} />
         {item.label}
       </Text>
     </Link>
   ));
 
   return (
-    <Flex className="w-72 py-5 flex-col gap-2">
+    <Flex className="w-72 top-0 left-0 lg:h-full py-5 lg:flex-col flex-row gap-2">
       <h2 className="font-bold text-2xl pl-4 mb-4">Menu</h2>
       {links}
     </Flex>

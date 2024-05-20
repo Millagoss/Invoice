@@ -134,7 +134,7 @@ const UpdateInvoice = ({ invoice, clients }: Props) => {
   ));
 
   return (
-    <Paper className="container mx-auto space-y-5 px-6 py-8 ">
+    <Paper className="lg:container w-full p-1 mx-auto space-y-5 lg:px-6 py-8 ">
       <h1 className="text-2xl font-bold">Create Invoice</h1>
       <Group className="flex w-full">
         <TextInput

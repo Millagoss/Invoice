@@ -20,7 +20,7 @@ const UserHeader = () => {
   return (
     <header>
       <Flex className="justify-between w-full">
-        <Box>
+        <Box className="hidden lg:block">
           <span className="flex items-center gap-2">
             {user && (
               <>
