@@ -83,6 +83,7 @@ export const updateInvoice = async (invoice: UpdateInvoice) => {
         items: true,
       },
     });
+    revalidatePath("/invoices");
     return { data: updatedInvoice };
   } catch (error) {
     console.log(error);
@@ -121,6 +122,7 @@ export const addItem = async (invoiceItems: Items) => {
         price: Number(item.price),
       },
     });
+    revalidatePath("/invoices");
     return { data };
   } catch (error) {
     console.log(error);
@@ -133,6 +135,7 @@ export const deleteItem = async (id: number) => {
     const data = await prisma.invoiceItem.delete({
       where: { id: Number(id) },
     });
+    revalidatePath("/invoices");
     return { data };
   } catch (error) {
     console.log(error);
