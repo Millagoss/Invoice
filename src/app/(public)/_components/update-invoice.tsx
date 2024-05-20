@@ -108,7 +108,7 @@ const UpdateInvoice = ({ invoice, clients }: Props) => {
         ...p,
         { id: data?.id, description: data?.description, price: data?.price },
       ]);
-      return notify("Success", "Item Added Successfully");
+      notify("Success", "Item Added Successfully");
     } else {
       notify("Error", "Something went wrong");
     }
