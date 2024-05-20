@@ -3,9 +3,8 @@ import { useState } from "react";
 
 import { notify } from "@/components/notification/notification";
 import { useAuth } from "@/providers/context";
-import { InvoiceData } from "@/types/invoice";
+import { InvoiceData, InvoiceListType } from "@/types/invoice";
 import {
-  Badge,
   Box,
   Button,
   Combobox,
@@ -13,59 +12,113 @@ import {
   Group,
   Input,
   InputBase,
+  Loader,
   NumberInput,
   Paper,
   TextInput,
   useCombobox,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { IconX } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { createInvoice } from "../create-invoice/_action/createInvoice";
+import {
+  addItem,
+  deleteInvoice,
+  deleteItem,
+  updateInvoice,
+} from "../invoices/_action/invoice.action";
 
 interface Props {
   clients: { id: number; name: string; email: string }[];
+  invoice: InvoiceListType;
 }
 
-const initialInvoice: InvoiceData = {
-  number: "",
-  client: "",
-  items: [],
-  total: 0,
-  dueDate: null,
-};
+interface InvoiceItems {
+  id: number;
+  description: string;
+  price: number;
+}
 
-const CreateInvoice = ({ clients }: Props) => {
+const UpdateInvoice = ({ invoice, clients }: Props) => {
   const router = useRouter();
   const { user } = useAuth();
   if (!user) {
     router.push("/auth/sign-in");
   }
+  const { client, items, total, dueDate, number, id } = invoice;
 
   const [description, setDescription] = useState<string>("");
-  const [invoiceNumber, setInvoiceNumber] = useState<string>("");
+  const [invoiceNumber, setInvoiceNumber] = useState<string>(number || "");
   const [price, setPrice] = useState<string | number>("");
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
-  const [invoiceData, setInvoiceData] = useState<InvoiceData>(initialInvoice);
+  const [invoiceItems, setInvoiceItems] = useState<InvoiceItems[]>(items || []);
+
+  const [invoiceData, setInvoiceData] = useState<InvoiceData>({
+    client: JSON.stringify(client?.id),
+    total: total || 0,
+    dueDate: new Date(dueDate || "") || null,
+    number,
+  });
 
   const handleSubmit = async () => {
-    if (!invoiceNumber || !invoiceData.client || !invoiceData.items?.length) {
+    if (!invoiceNumber || !invoiceData.client) {
       return notify("Error", "Please fill in");
     }
     setIsAdding(true);
     const d = {
+      id,
       ...invoiceData,
       number: invoiceNumber,
-      userId: user?.id,
+      createdBy: user?.id,
     };
-
-    const { data, error } = await createInvoice(d);
-    if (data) notify("Success", "Invoice Created Successfully");
+    const { data, error } = await updateInvoice(d);
+    if (data) notify("Success", "Invoice Updated Successfully");
     else if (error) {
       notify("Error", "Something went wrong");
       console.log(error);
+    }
+    setIsAdding(false);
+  };
+
+  const handleDeleteInvoice = async () => {
+    setIsAdding(true);
+    const { data } = await deleteInvoice(id);
+    if (data) {
+      notify("Success", "Invoice Deleted Successfully");
+      router.push("/invoices");
+    } else notify("Error", "Something went wrong");
+    setIsAdding(false);
+  };
+
+  const handleAddItems = async () => {
+    setIsAdding(true);
+    const { data } = await addItem({
+      invoiceId: id,
+      item: { description, price },
+    });
+    if (data) {
+      setInvoiceItems((p) => [
+        ...p,
+        { id: data?.id, description: data?.description, price: data?.price },
+      ]);
+      return notify("Success", "Item Added Successfully");
+    } else {
+      notify("Error", "Something went wrong");
+    }
+    setIsAdding(false);
+  };
+
+  const handleRemoveItem = async (id: number) => {
+    setIsAdding(true);
+    const { data } = await deleteItem(id);
+    if (data) {
+      notify("Success", "Item Deleted Successfully");
+      setInvoiceItems((p) => p.filter((item) => item.id !== id));
+    } else {
+      notify("Error", "Something went wrong");
     }
     setIsAdding(false);
   };
@@ -134,28 +187,31 @@ const CreateInvoice = ({ clients }: Props) => {
               onChange={setPrice}
             />
           </Box>
-          <Button
-            onClick={() => {
-              setInvoiceData((prev) => ({
-                ...prev,
-                items: [
-                  ...(prev.items ?? []),
-                  { description, price: Number(price) },
-                ],
-              }));
-              setDescription("");
-              setPrice("");
-            }}
-          >
+          <Button loading={isAdding} onClick={handleAddItems}>
             Add
           </Button>
         </Flex>
         <Box className="flex gap-2 items-start my-2">
-          {invoiceData.items?.map((item, index) => (
-            <Badge variant="outline" key={index} className="p-3">
-              <span className="font-bold"> {index + 1}:</span>{" "}
-              {item.description} - {item.price}
-            </Badge>
+          {invoiceItems?.map((item, index) => (
+            <>
+              <Box
+                variant="outline"
+                key={index}
+                className="p-3 border border-blue-300 rounded-lg text-primary-default gap-2 items-center flex"
+              >
+                <p className="font-bold"> {index + 1}:</p> {item.description} -{" "}
+                {item.price}
+                {isAdding ? (
+                  <Loader size="20px" />
+                ) : (
+                  <IconX
+                    className="cursor-pointer"
+                    onClick={() => handleRemoveItem(item.id)}
+                    size="20px"
+                  />
+                )}
+              </Box>
+            </>
           ))}
         </Box>
       </Flex>
@@ -182,18 +238,19 @@ const CreateInvoice = ({ clients }: Props) => {
       </Group>
       <Group justify="end">
         <Button loading={isAdding} onClick={handleSubmit}>
-          Submit
+          Update
         </Button>
         <Button
           disabled={isAdding}
           variant="outline"
-          onClick={() => setInvoiceData(initialInvoice)}
+          color="red"
+          onClick={handleDeleteInvoice}
         >
-          Clear
+          Delete
         </Button>
       </Group>
     </Paper>
   );
 };
 
-export default CreateInvoice;
+export default UpdateInvoice;

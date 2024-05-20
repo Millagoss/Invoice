@@ -1,13 +1,13 @@
 export interface InvoiceData {
   number: string;
-  items: { description: string; price: number }[];
+  items?: { description: string; price: number }[];
   total: number;
   dueDate: Date | null;
   client: string;
 }
 
 interface items {
-  client: {
+  client?: {
     id: number;
     name: string;
     email: string;
@@ -24,6 +24,6 @@ export interface InvoiceListType extends items {
   number: string;
   clientId: number;
   total: number;
-  dueDate: string;
+  dueDate: string | Date | null;
   createdBy: number;
 }

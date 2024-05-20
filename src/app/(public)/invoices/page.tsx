@@ -1,6 +1,6 @@
 import { Box, Text } from "@mantine/core";
 import InvoiceList from "../_components/invoice-list";
-import { getAllInvoices } from "./_action/invoice";
+import { getAllInvoices } from "./_action/invoice.action";
 
 const page = async () => {
   const { invoices } = await getAllInvoices();

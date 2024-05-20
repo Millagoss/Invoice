@@ -14,7 +14,7 @@ export const createInvoice = async (data: Invoice) => {
         number,
         clientId: Number(client),
         items: {
-          create: items.map((item) => ({
+          create: items?.map((item) => ({
             description: item.description,
             price: item.price,
           })),

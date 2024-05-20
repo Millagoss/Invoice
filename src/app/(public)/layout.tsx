@@ -12,7 +12,7 @@ export default async function PublicLayout({
 }) {
   const userId = await getSession();
 
-  if (userId === null) {
+  if (!userId?.id) {
     redirect("/auth/sign-up");
   }
 
