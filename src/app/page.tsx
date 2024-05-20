@@ -1,5 +1,8 @@
-import { redirect } from 'next/navigation';
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  redirect('/auth/sign-up');
+export default async function Home() {
+  const user = await getSession();
+  if (user?.id) redirect("/invoices");
+  else redirect("/auth/sign-up");
 }
